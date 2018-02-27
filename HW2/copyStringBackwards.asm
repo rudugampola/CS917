@@ -1,29 +1,34 @@
-; Copying Strings Backward            (copyStringBackwards.asm)
-; Description: Using a loop to copy a string backwards
-; Date: 03/05/2018
+title Copying a String Backwards using Irvine Library
 
-INCLUDE Irvine32.inc
+; Author: Ravindu Udugampola			  ID: 880759941
+; Description: Taking a string from source variable and 
+;	copying it to target variable in reverse
+; Date: 02/27/2018
+
+include irvine32.inc								;Include Irvine library
 
 .data
-source  byte  "This is the source string", 0
-target  byte  sizeof source dup('#')
+	source BYTE "This is the source string",0		; Given variables by question 
+	target BYTE SIZEOF source DUP(0)				; Given variables by question 
 
-.code
-main PROC
-    mov edi, sizeof source - 2D
-    mov ecx, sizeof source
+.code													
+main proc											; This will copy the Source string to the 						
+													; target string in reverse!
+	mov esi, offset source
+	mov ecx, sizeof source
 
-reverse_string:
-    mov al, source[esi]
-    mov target[edi], al
-    inc esi
-    dec edi
-    loop reverse_string
-
-	mov esi, offset target
-	mov ebx, 1
+	L1:
+		mov al, byte ptr [esi]
+		mov [target+ecx-2],al
+		inc esi
+	loop L1
+									
+	mov edx, offset target							; Show the memory location
 	mov ecx, sizeof target
-	call DumpMem
+	dec ecx
+	call dumpmem
+
+	exit
 
 main endp
 end main
